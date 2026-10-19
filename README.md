@@ -11,6 +11,9 @@ A data analysis of **4,486 open LLMs** from the Hugging Face **Open LLM Leaderbo
 ![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-3.10-11557C)
+![seaborn](https://img.shields.io/badge/seaborn-4C72B0)
+![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?logo=scipy&logoColor=white)
+![Google Colab](https://img.shields.io/badge/Run%20on-Colab-F9AB00?logo=googlecolab&logoColor=white)
 ![Plotly](https://img.shields.io/badge/Plotly-3F4F75?logo=plotly&logoColor=white)
 ![Hugging Face](https://img.shields.io/badge/Data-Hugging%20Face-FFD21E?logo=huggingface&logoColor=black)
 ![Models](https://img.shields.io/badge/models%20analysed-4%2C486-blue)
@@ -61,10 +64,10 @@ flowchart LR
    - `log_params`: size on a ×10 scale, because capability grows with the *multiple* of size, not the raw number
    - `footprint_4bit_gb` = 0.55 GB × params (B), plus `footprint_16bit_gb`
    - `fits_4gb / fits_8gb / fits_16gb`: a model may use 80% of device memory, so the limits are ≤5.8B, ≤11.6B and ≤23.3B parameters
-   - `size_band`: Tiny ≤1B · Small 1–3.5B · Medium 3.5–9.5B · Large 9.5–20B · X-Large 20–50B · Huge >50B
+   - `size_band`: Tiny ≤1B · Small 1–3.5B · Medium 3.5–9.5B · Large 9.5–16B · X-Large 16–36B · Huge >36B
    - `score_per_gb`, `model_date`, `years_since_2023`, `family_group`, `precision_group`
 5. **Model size alone.** A straight-line fit, `score = a + b·log10(params)`, gives `expected_score`. The residual `beat_curve` (actual − expected) measures how much a model over- or under-performs for its size.
-6. **Explain the rest.** Box plots, bootstrap confidence intervals and a **random forest** (trained on 75% of models, tested on the held-out 25%) measure how much training type, blueprint, date and yes/no traits add beyond size.
+6. **Explain the rest.** Box plots, 95% confidence intervals and a **random forest** (trained on 75% of models, tested on the held-out 25%) measure how much training type, blueprint, date and yes/no traits add beyond size.
 7. **Decide.** Using only models that can still be downloaded, find the **efficiency frontier** and the best pick for each device budget.
 
 ---
@@ -86,7 +89,7 @@ flowchart LR
 
 - Every **10× increase in size adds ~13.8 points**.
 - Among 7–8B models alone, scores run from **7 to 34** (middle 90%).
-- **60%** of Large (9.5–20B) models beat the *typical* X-Large (20–50B) model.
+- **60%** of Large (9.5–16B) models beat the *typical* X-Large (16–36B) model.
 
 ### 2️⃣ Choosing well at a given size is worth a ~4× bigger model
 
@@ -254,6 +257,43 @@ Today's best **4 GB** model (35.3) matches what **30B+** models first reached ab
 
 ---
 
+## 🐍 The code
+
+Everything in this repo is produced by a single Python script, **[`llms_size_vs_capability_analysis.py`](llms_size_vs_capability_analysis.py)** (~2,000 lines, originally a Colab notebook). It is split into clearly marked parts, and the `# %%` markers let you run it cell by cell in VS Code, Jupyter or Colab.
+
+| Part | What the code does | Output |
+|---|---|---|
+| **0 · Setup** | Imports, chart style, and the stated assumptions (`BYTES_PER_PARAM_4BIT = 0.55`, `USABLE_FRACTION = 0.80`, size bands, benchmark names) | — |
+| **1 · Load & clean** | Downloads `open-llm-leaderboard/contents` (or reads a local file), renames columns, drops unusable, flagged and duplicate rows, and engineers features | `leaderboard_clean.csv`, Figures 1–6 |
+| **2 · Size vs score** | Fits `score ~ log10(params)` with `LinearRegression`, plus binned medians, a hexbin and violins | Figures 7–10 |
+| **3 · Beyond size** | Computes `beat_curve` residuals, 95% CIs by type/family/trait, and `RandomForestRegressor` (75/25 split) with permutation importance | Figures 11–17 |
+| **4 · Skills** | Spearman correlations, per-benchmark regressions, a radar chart and a same-score/different-skills search | Figures 18–22 |
+| **5 · Over time** | Running best score per size band, and how long small models take to catch up with large ones | Figures 23–24 |
+| **6 · Decision** | Score per GB, efficiency frontier, old vs new rule, top-8 picks per device, CO₂ and popularity | Figures 25–30, `interactive_explorer.html` |
+| **7–8 · Report** | Writes the conclusions and `findings_report.md`, then zips everything | `llm_analysis_outputs.zip` |
+
+### ▶️ Run it yourself
+
+**Locally**
+
+```bash
+pip install -r requirements.txt
+python llms_size_vs_capability_analysis.py
+```
+
+**On Google Colab:** upload the `.py` file, then run `%run llms_size_vs_capability_analysis.py` in a cell. The results zip downloads automatically.
+
+The data (~1 MB) downloads automatically from Hugging Face, and a full run takes about 1–2 minutes. All outputs go to `llm_analysis_outputs/`. Optional environment variables:
+
+| Variable | Effect |
+|---|---|
+| `LEADERBOARD_FILE=path/to/file.parquet` | Use a local copy of the raw leaderboard instead of downloading it |
+| `STRICT=1` | Stop on the first chart error (useful for testing) |
+
+Want different assumptions? Edit `BYTES_PER_PARAM_4BIT`, `USABLE_FRACTION`, `BUDGETS_GB` or `BAND_EDGES` at the top of Part 0 and re-run. Every figure and number updates.
+
+---
+
 ## 🖱️ Interactive explorer
 
 [`interactive_explorer.html`](interactive_explorer.html) is an interactive Plotly version of the main chart. Hover over any dot to see the model's name, size, memory need and beat-the-curve score. Click legend entries to filter, and drag to zoom.
@@ -266,6 +306,8 @@ Today's best **4 GB** model (35.3) matches what **30B+** models first reached ab
 
 ```
 llms_size_vs_capability/
+├── llms_size_vs_capability_analysis.py  # Full pipeline: download → clean → model → 30 figures → report
+├── requirements.txt           # Python dependencies
 ├── leaderboard_clean.csv      # 4,486 cleaned + enriched models (52 columns)
 ├── findings_report.md         # Full written analysis, all 30 figures explained
 ├── interactive_explorer.html  # Plotly interactive size-vs-score chart

@@ -14,3 +14,7 @@ desktop.ini
 
 # Claude Code local settings
 .claude/
+
+# Script outputs
+llm_analysis_outputs/
+llm_analysis_outputs.zip

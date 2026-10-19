@@ -1,0 +1,7 @@
+# Keep Python as the repository's main language on GitHub:
+# the Plotly explorer is a generated file and the CSV/report are data/docs.
+interactive_explorer.html linguist-generated=true
+*.csv linguist-generated=true
+findings_report.md linguist-documentation=true
+
+*.png binary

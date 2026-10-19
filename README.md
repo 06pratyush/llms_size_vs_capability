@@ -13,7 +13,7 @@ A data analysis of **4,486 open LLMs** from the Hugging Face **Open LLM Leaderbo
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-3.10-11557C)
 ![seaborn](https://img.shields.io/badge/seaborn-4C72B0)
 ![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?logo=scipy&logoColor=white)
-![Google Colab](https://img.shields.io/badge/Run%20on-Colab-F9AB00?logo=googlecolab&logoColor=white)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1uwvLyJdW4ZVIPZ5Zl2DY2NIHiNiDj8X2)
 ![Plotly](https://img.shields.io/badge/Plotly-3F4F75?logo=plotly&logoColor=white)
 ![Hugging Face](https://img.shields.io/badge/Data-Hugging%20Face-FFD21E?logo=huggingface&logoColor=black)
 ![Models](https://img.shields.io/badge/models%20analysed-4%2C486-blue)
@@ -259,7 +259,7 @@ Today's best **4 GB** model (35.3) matches what **30B+** models first reached ab
 
 ## 🐍 The code
 
-Everything in this repo is produced by a single Python script, **[`llms_size_vs_capability_analysis.py`](llms_size_vs_capability_analysis.py)** (~2,000 lines, originally a Colab notebook). It is split into clearly marked parts, and the `# %%` markers let you run it cell by cell in VS Code, Jupyter or Colab.
+Everything in this repo is produced by a single Python script, **[`llms_size_vs_capability_analysis.py`](llms_size_vs_capability_analysis.py)** (~2,000 lines), exported from the original **[Google Colab notebook](https://colab.research.google.com/drive/1uwvLyJdW4ZVIPZ5Zl2DY2NIHiNiDj8X2)**. It is split into clearly marked parts, and the `# %%` markers let you run it cell by cell in VS Code, Jupyter or Colab.
 
 | Part | What the code does | Output |
 |---|---|---|
@@ -281,7 +281,9 @@ pip install -r requirements.txt
 python llms_size_vs_capability_analysis.py
 ```
 
-**On Google Colab:** upload the `.py` file, then run `%run llms_size_vs_capability_analysis.py` in a cell. The results zip downloads automatically.
+**On Google Colab (easiest):** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1uwvLyJdW4ZVIPZ5Zl2DY2NIHiNiDj8X2)
+
+Open the [original notebook](https://colab.research.google.com/drive/1uwvLyJdW4ZVIPZ5Zl2DY2NIHiNiDj8X2) and choose **Runtime → Run all**. Alternatively, upload the `.py` file to any Colab notebook and run `%run llms_size_vs_capability_analysis.py` in a cell. The results zip downloads automatically.
 
 The data (~1 MB) downloads automatically from Hugging Face, and a full run takes about 1–2 minutes. All outputs go to `llm_analysis_outputs/`. Optional environment variables:
 
@@ -306,7 +308,7 @@ Want different assumptions? Edit `BYTES_PER_PARAM_4BIT`, `USABLE_FRACTION`, `BUD
 
 ```
 llms_size_vs_capability/
-├── llms_size_vs_capability_analysis.py  # Full pipeline: download → clean → model → 30 figures → report
+├── llms_size_vs_capability_analysis.py  # Full pipeline (exported from the Colab notebook)
 ├── requirements.txt           # Python dependencies
 ├── leaderboard_clean.csv      # 4,486 cleaned + enriched models (52 columns)
 ├── findings_report.md         # Full written analysis, all 30 figures explained

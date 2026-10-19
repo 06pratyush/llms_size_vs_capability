@@ -1,0 +1,9 @@
+numpy
+pandas
+matplotlib>=3.8
+seaborn
+scipy
+scikit-learn
+plotly
+datasets
+pyarrow

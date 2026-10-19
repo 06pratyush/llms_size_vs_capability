@@ -19,15 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----------------------------------------------------------------------------
-Third-party data notice
-
-`leaderboard_clean.csv` is a cleaned and enriched derivative of the Hugging
-Face dataset "open-llm-leaderboard/contents"
-(https://huggingface.co/datasets/open-llm-leaderboard/contents), published by
-the Open LLM Leaderboard team. The upstream benchmark results remain the work
-of their original authors; the MIT license above covers the analysis, derived
-columns, figures, report and interactive explorer in this repository. Each
-model listed in the dataset is governed by its own license (see the `license`
-column).

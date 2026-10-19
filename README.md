@@ -273,7 +273,8 @@ llms_size_vs_capability/
 │   ├── fig01_size_distribution.png
 │   ├── ...
 │   └── fig30_popularity_vs_score.png
-├── LICENSE                    # MIT (+ third-party data notice)
+├── LICENSE                    # MIT license
+├── NOTICE                     # Third-party data attribution
 └── README.md
 ```
 
@@ -345,7 +346,7 @@ print(picks)
 
 ## 📜 License
 
-The analysis, derived data, figures, report and explorer are released under the **[MIT License](LICENSE)**. The upstream leaderboard data belongs to its original publishers, and each model listed is governed by its own licence (see the `license` column).
+The analysis, derived data, figures, report and explorer are released under the **[MIT License](LICENSE)** (see [NOTICE](NOTICE) for data attribution). The upstream leaderboard data belongs to its original publishers, and each model listed is governed by its own licence (see the `license` column).
 
 <div align="center">
 
